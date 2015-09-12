@@ -1,12 +1,6 @@
 package adammcneilly.capturethetag;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NdefMessage;
@@ -16,16 +10,16 @@ import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+
+import adammcneilly.capturethetag.Utilities.FlagUtility;
 
 
 public class FlagWriteActivity extends AppCompatActivity {
@@ -93,6 +87,9 @@ public class FlagWriteActivity extends AppCompatActivity {
             Tag detectedTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             NdefRecord record = NdefRecord.createMime(mimeType, getFlagString().getBytes());
             NdefMessage message = new NdefMessage(new NdefRecord[] { record });
+
+            new FlagUtility().AddFlag(gameName, teamName, flagName.getText().toString());
+
             if (writeTag(message, detectedTag)) {
                 Toast.makeText(this, "Success: Wrote placeid to nfc tag", Toast.LENGTH_LONG)
                         .show();
