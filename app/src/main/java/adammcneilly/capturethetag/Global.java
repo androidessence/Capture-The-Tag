@@ -6,6 +6,7 @@ package adammcneilly.capturethetag;
 public class Global {
 
     public static String FirebaseURl = "https://capture-the-tag.firebaseio.com/";
+    public static final String IS_CAPTAIN = "IsCaptain";
 
     // keys in firebase
     public static String PLAYERS = "players";

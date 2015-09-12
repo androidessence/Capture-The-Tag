@@ -19,4 +19,12 @@
         android:padding="8dp"
         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
+    <ImageView
+        android:id="@+id/captain_image"
+        android:layout_width="56dp"
+        android:layout_height="match_parent"
+        android:src="@mipmap/ic_captain"
+        android:padding="16dp"
+        android:visibility="gone"/>
+
 </LinearLayout>

@@ -188,7 +188,7 @@ public class ReadFlagActivity extends AppCompatActivity {
             // Test langcode
             Log.v(TAG, textEncoding);
             //return new String(payload, 1, languageCodeLength, "US-ASCII");
-            return new String(payload, 0, payload.length - languageCodeLength - 1, textEncoding);
+            return new String(payload, 0, payload.length, textEncoding);
         }
 
         @Override
