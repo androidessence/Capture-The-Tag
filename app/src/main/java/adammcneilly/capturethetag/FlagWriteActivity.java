@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -91,8 +92,8 @@ public class FlagWriteActivity extends AppCompatActivity {
             new FlagUtility().AddFlag(gameName, teamName, flagName.getText().toString());
 
             if (writeTag(message, detectedTag)) {
-                Toast.makeText(this, "Success: Wrote placeid to nfc tag", Toast.LENGTH_LONG)
-                        .show();
+                TextView tv = (TextView) findViewById(R.id.tap_tag);
+                tv.setText("Flag " + flagName.getText().toString() + " successfully created.");
             }
         }
     }
