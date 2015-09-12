@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -127,6 +128,11 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
 
         Player player = (Player) getChild(groupPosition, childPosition);
         viewHolder.playerName.setText(player.getName());
+        if(player.isCaptain()){
+            viewHolder.captainImage.setVisibility(View.VISIBLE);
+        } else{
+            viewHolder.captainImage.setVisibility(View.GONE);
+        }
 
         return convertView;
     }
@@ -170,9 +176,11 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
 
     public class PlayerViewHolder{
         public final TextView playerName;
+        public final ImageView captainImage;
 
         public PlayerViewHolder(View view){
             playerName = (TextView) view.findViewById(R.id.player_name);
+            captainImage = (ImageView) view.findViewById(R.id.captain_image);
         }
     }
 }
