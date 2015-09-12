@@ -1,0 +1,38 @@
+//process of capturing flag
+
+if(flag is tapped)
+	check the owner of the flag
+	
+	//capture enemy flag
+	if(player's team != flag's owner && !player possess flag)
+		mark player as possessing a flag
+		mark the flag as disabled/inactive
+		
+	//return flag to base
+	if(player's team == flag's owner && player possess flag)
+		add point to player's team
+		mark player !possess flag //stolen flag is still marked as disabled so we don't need to worry about that
+	
+	//attempting to steal multiple flags
+	if(player's team != flag's owner && player possess flag)
+		print "Return your current flag to a home base!"
+	
+	//player touches his own base
+	if(player's team == flag's owner)
+		print "This is your flag, defend it!"
+		
+	else
+		
+		
+
+//getting tagged out
+if(tagged button pressed)
+		if(player possess flag)
+			mark the flag as active
+			mark player !possess flag
+		else
+			print "You don't have a flag!"
+			
+			
+		
+	
