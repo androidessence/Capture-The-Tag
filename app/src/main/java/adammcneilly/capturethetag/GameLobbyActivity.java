@@ -66,6 +66,7 @@ public class GameLobbyActivity extends AppCompatActivity {
                 // Pull data from datasnapshot
                 // Add player list item for each player returned
                 String name = dataSnapshot.getKey();
+
                 mAdapter.insertPlayer(new Team(teamName), new Player(name));
             }
 

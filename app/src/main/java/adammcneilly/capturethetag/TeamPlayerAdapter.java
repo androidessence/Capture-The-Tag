@@ -38,6 +38,10 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
         for(Team team : mTeamPlayers.keySet()){
             if(team.getName().equals(playerTeam.getName())){
                 mTeamPlayers.get(team).add(player);
+                if (mTeamPlayers.get(team).size() == 1)
+                {
+                    // TODO: Add crown to player item (on left hand side)
+                }
             }
         }
 
@@ -77,6 +81,8 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
 
         return null;
     }
+
+
 
     @Override
     public long getGroupId(int groupPosition) {

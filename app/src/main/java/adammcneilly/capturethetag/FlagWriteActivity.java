@@ -15,7 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -89,11 +88,16 @@ public class FlagWriteActivity extends AppCompatActivity {
             NdefRecord record = NdefRecord.createMime(mimeType, getFlagString().getBytes());
             NdefMessage message = new NdefMessage(new NdefRecord[] { record });
 
-            new FlagUtility().AddFlag(gameName, teamName, flagName.getText().toString());
-
             if (writeTag(message, detectedTag)) {
-                TextView tv = (TextView) findViewById(R.id.tap_tag);
-                tv.setText("Flag " + flagName.getText().toString() + " successfully created.");
+
+                new FlagUtility().AddFlag(
+                        gameName,
+                        teamName,
+                        flagName.getText().toString(),
+                        Global.ByteArrToSerial(detectedTag.getId()));
+
+                Toast.makeText(this, "Success: Wrote placeid to nfc tag", Toast.LENGTH_LONG)
+                        .show();
             }
         }
     }

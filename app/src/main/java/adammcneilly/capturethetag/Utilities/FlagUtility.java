@@ -8,22 +8,26 @@ import com.firebase.client.Firebase;
  */
 public class FlagUtility {
 
-    public void AddFlag(String gameName, String teamName, String flagName)
+    public void AddFlag(String gameName, String teamName, String flagName, String tagSerial)
     {
         SetFlagCapturedStatus(gameName, teamName, flagName, Global.FlagStatus.Not_Captured);
+        SetSerial(gameName, teamName, flagName, tagSerial);
     }
 
     public void RemoveFlag(String gameName, String teamName, String flagName)
     {
-        new Firebase(Global.FirebaseURl).child(gameName).child(teamName).child(FLAGS).child(flagName).removeValue();
+        new Firebase(Global.FirebaseURl).child(gameName).child(teamName).child(Global.FLAGS).child(flagName).removeValue();
     }
 
     public void SetFlagCapturedStatus(String gameName, String teamName, String flagName, Global.FlagStatus capturedStatus)
     {
-        new Firebase(Global.FirebaseURl).child(gameName).child(teamName).child(FLAGS).child(flagName)
-                .child(STATUS).setValue(capturedStatus);
+        new Firebase(Global.FirebaseURl).child(gameName).child(teamName).child(Global.FLAGS).child(flagName)
+                .child(Global.STATUS).setValue(capturedStatus);
     }
 
-    public static String FLAGS = "flags";
-    public static String STATUS = "status";
+    public void SetSerial(String gameName, String teamName, String flagName, String strSerial)
+    {
+        new Firebase(Global.FirebaseURl).child(gameName).child(teamName).child(Global.FLAGS).child(flagName)
+                .child(Global.SERIAL).setValue(strSerial);
+    }
 }
