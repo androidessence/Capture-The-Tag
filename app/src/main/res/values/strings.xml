@@ -15,4 +15,6 @@
     <string name="join">Join</string>
     <string name="title_activity_game_lobby">Game Lobby</string>
     <string name="start">Start</string>
+    <string name="cancel">Cancel</string>
+    <string name="player_name">Player Name</string>
 </resources>

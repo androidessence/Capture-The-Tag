@@ -1,10 +1,14 @@
 package adammcneilly.capturethetag;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -114,11 +118,21 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    public class TeamViewHolder{
+    public class TeamViewHolder implements View.OnClickListener{
         public final TextView teamName;
+        private final Button joinTeam;
 
         public TeamViewHolder(View view){
             teamName = (TextView) view.findViewById(R.id.team_name);
+            joinTeam = (Button) view.findViewById(R.id.join_team);
+            joinTeam.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            //TODO: Remove hard coded game name.
+            DialogFragment enterNameDialog = EnterNameDialog.NewInstance(teamName.getText().toString(), "MHacks");
+            enterNameDialog.show(((AppCompatActivity)mContext).getSupportFragmentManager(), "enterName");
         }
     }
 
