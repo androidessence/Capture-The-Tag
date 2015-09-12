@@ -21,6 +21,8 @@ public class StartGameActivity extends AppCompatActivity {
     private LinearLayout mTeamLayout;
     private List<EditText> mTeamEditTexts =  new ArrayList<>();
     private Button mAddTeam;
+    private Button mSubmit;
+    private EditText mGameName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,13 @@ public class StartGameActivity extends AppCompatActivity {
         getUIElements();
 
         // Set click listener on button
+        mSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startGame();
+            }
+        });
+
         // Commented out. This is a stretch goal.
 //        mAddTeam.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -44,11 +53,50 @@ public class StartGameActivity extends AppCompatActivity {
 //        });
     }
 
+    /**
+     * Retrieves all necessary UI elements for this activity.
+     */
     private void getUIElements(){
         mTeamLayout = (LinearLayout) findViewById(R.id.team_layout);
         mTeamEditTexts.add((EditText) findViewById(R.id.team_1_name));
         mTeamEditTexts.add((EditText) findViewById(R.id.team_2_name));
         mAddTeam = (Button) findViewById(R.id.add_team);
+        mSubmit = (Button) findViewById(R.id.submit);
+        mGameName = (EditText) findViewById(R.id.game_name);
+    }
+
+    /**
+     * Called when the submit button is clicked.
+     */
+    private void startGame(){
+        if(!validateInput()){
+            return;
+        }
+
+        //TODO: Do something with teams.
+    }
+
+    /**
+     * Validates the input of team names and game name.
+     * @return False if any EditTexts are blank.
+     */
+    private boolean validateInput(){
+        boolean isValid = true;
+
+        if(mGameName.getText().toString().isEmpty()){
+            mGameName.setError("Name cannot be blank.");
+            isValid = false;
+        }
+
+        // Because Adam is too lazy to care, user cannot have any empty EditTexts.
+        for(EditText teamEditText : mTeamEditTexts){
+            if(teamEditText.getText().toString().isEmpty()){
+                teamEditText.setError("Name cannot be blank.");
+                isValid = false;
+            }
+        }
+
+        return isValid;
     }
 
     /**

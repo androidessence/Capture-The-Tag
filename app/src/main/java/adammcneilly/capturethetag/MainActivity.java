@@ -37,11 +37,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Starts the activity to write to a flag.
+     */
     private void startFlagWriteActivity(){
         Intent flagWriteIntent = new Intent(MainActivity.this, FlagWriteActivity.class);
         startActivity(flagWriteIntent);
     }
 
+    /**
+     * Starts the Activity used to start a game.
+     */
     private void startStartGameActivity(){
         Intent startGameIntent = new Intent(MainActivity.this, StartGameActivity.class);
         startActivity(startGameIntent);

@@ -10,4 +10,6 @@
     <string name="team_one_hint">Team 1 name</string>
     <string name="team_two_hint">Team 2 name</string>
     <string name="add_team">Add Team</string>
+    <string name="submit">Submit</string>
+    <string name="game_name_hint">Game Name</string>
 </resources>
