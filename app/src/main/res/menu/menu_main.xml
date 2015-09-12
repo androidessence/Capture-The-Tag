@@ -8,7 +8,4 @@
     <item android:id="@+id/action_start_game"
         android:title="@string/title_activity_start_game"
         app:showAsAction="never"/>
-    <item android:id="@+id/action_game_lobby"
-        android:title="@string/title_activity_game_lobby"
-        app:showAsAction="never"/>
 </menu>

@@ -11,6 +11,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,11 +22,18 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     private List<Team> mTeams;
     private HashMap<Team, List<Player>> mTeamPlayers;
+    private String mGameName;
 
-    public TeamPlayerAdapter(Context context, List<Team> teams, HashMap<Team, List<Player>> teamPlayers){
+    public TeamPlayerAdapter(Context context, List<Team> teams, String gameName){
         this.mContext = context;
         this.mTeams = teams;
-        this.mTeamPlayers = teamPlayers;
+        this.mTeamPlayers = new HashMap<>();
+        this.mGameName = gameName;
+    }
+
+    public void insertPlayer(Team team, Player player){
+        mTeamPlayers.get(team).add(player);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -90,7 +98,7 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
         }
 
         Team team = (Team) getGroup(groupPosition);
-        viewHolder.teamName.setText(team.getName());
+        viewHolder.teamName.setText(team.getName() + " (" + getChildrenCount(groupPosition) + " players)");
 
         return convertView;
     }
@@ -131,7 +139,7 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
         @Override
         public void onClick(View v) {
             //TODO: Remove hard coded game name.
-            DialogFragment enterNameDialog = EnterNameDialog.NewInstance(teamName.getText().toString(), "MHacks");
+            DialogFragment enterNameDialog = EnterNameDialog.NewInstance(teamName.getText().toString(), mGameName);
             enterNameDialog.show(((AppCompatActivity)mContext).getSupportFragmentManager(), "enterName");
         }
     }

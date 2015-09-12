@@ -38,9 +38,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_start_game:
                 startStartGameActivity();
                 return true;
-            case R.id.action_game_lobby:
-                startGameLobbyActivity();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
