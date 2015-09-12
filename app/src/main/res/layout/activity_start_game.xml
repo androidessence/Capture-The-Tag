@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="adammcneilly.capturethetag.StartGameActivity">
 
     <include layout="@layout/toolbar"/>
@@ -9,9 +10,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+        <EditText
+            android:id="@+id/team_1_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="text"
+            android:hint="@string/team_one_hint"/>
+
+        </android.support.design.widget.TextInputLayout>
 
     </LinearLayout>
 
