@@ -3,4 +3,8 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_flag_write">Setup Flag</string>
+    <string name="flag_name_hint">Flag Name</string>
+    <string name="approach_tag_label">Approach Tag To Program&#8230;</string>
+    <string name="title_activity_start_game">Start Game</string>
 </resources>
