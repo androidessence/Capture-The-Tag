@@ -45,6 +45,7 @@ public class GameLobbyActivity extends AppCompatActivity {
 
         setTitle(mGameName + " Game Lobby");
 
+        // Setup Firebase connection
         ref = new Firebase(Global.FirebaseURl);
         // Not in this method but
         // for each team InitTeamListener
@@ -57,41 +58,15 @@ public class GameLobbyActivity extends AppCompatActivity {
         mExpandableListView.setAdapter(mAdapter);
     }
 
-    private List<Team> getTeams(){
-        List<Team> teams = new ArrayList<>();
-        teams.add(new Team("Red"));
-        teams.add(new Team("Blue"));
-        teams.add(new Team("Green"));
-        return teams;
-    }
-
-    private HashMap<Team, List<Player>> getTeamPlayers(){
-        HashMap<Team, List<Player>> teamPlayers = new HashMap<>();
-        List<Player> redPlayers = new ArrayList<>();
-        List<Player> bluePlayers = new ArrayList<>();
-        List<Player> greenPlayers = new ArrayList<>();
-        redPlayers.add(new Player("Player", "One"));
-        redPlayers.add(new Player("Player", "Two"));
-        redPlayers.add(new Player("Player", "Three"));
-        bluePlayers.add(new Player("Player", "Four"));
-        bluePlayers.add(new Player("Player", "Five"));
-        greenPlayers.add(new Player("Player", "Six"));
-        teamPlayers.put(new Team("Red"), redPlayers);
-        teamPlayers.put(new Team("Blue"), bluePlayers);
-        teamPlayers.put(new Team("Green"), greenPlayers);
-        return teamPlayers;
-    }
-
-    private void InitTeamListener(String teamName) {
+    private void InitTeamListener(final String teamName) {
         Firebase refWithPlayers = ref.child(mGameName).child(teamName).child("players");
-        Firebase refWithoutPlayers = ref.child(mGameName).child(teamName);
-        ref.child(mGameName).child(teamName).addChildEventListener(new ChildEventListener() {
+        refWithPlayers.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 // Pull data from datasnapshot
                 // Add player list item for each player returned
                 String name = dataSnapshot.getKey();
-                Log.v("AdamTest", name);
+                mAdapter.insertPlayer(new Team(teamName), new Player(name));
             }
 
             @Override

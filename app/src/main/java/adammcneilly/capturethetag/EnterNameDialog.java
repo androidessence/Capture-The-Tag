@@ -53,16 +53,20 @@ public class EnterNameDialog extends DialogFragment {
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mPlayerName.getText().toString().isEmpty()) {
-                    mPlayerName.setError("Name cannot be blank.");
-                    return;
-                }
-                new PlayerUtility().AddPlayer(mGameName, mTeamName, mPlayerName.getText().toString());
-                dismiss();
+                submitPlayer();
             }
         });
 
         return view;
+    }
+
+    private void submitPlayer(){
+        if (mPlayerName.getText().toString().isEmpty()) {
+            mPlayerName.setError("Name cannot be blank.");
+            return;
+        }
+        new PlayerUtility().AddPlayer(mGameName, mTeamName, mPlayerName.getText().toString());
+        dismiss();
     }
 
     @Override

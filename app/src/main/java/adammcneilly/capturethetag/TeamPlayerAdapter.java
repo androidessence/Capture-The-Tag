@@ -1,6 +1,5 @@
 package adammcneilly.capturethetag;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -21,18 +20,27 @@ import java.util.List;
 public class TeamPlayerAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     private List<Team> mTeams;
-    private HashMap<Team, List<Player>> mTeamPlayers;
+    private HashMap<Team, List<Player>> mTeamPlayers = new HashMap<>();
     private String mGameName;
 
     public TeamPlayerAdapter(Context context, List<Team> teams, String gameName){
         this.mContext = context;
         this.mTeams = teams;
-        this.mTeamPlayers = new HashMap<>();
+        for(Team team : teams){
+            mTeamPlayers.put(team, new ArrayList<Player>());
+            mTeamPlayers.put(team, new ArrayList<Player>());
+        }
         this.mGameName = gameName;
     }
 
-    public void insertPlayer(Team team, Player player){
-        mTeamPlayers.get(team).add(player);
+    public void insertPlayer(Team playerTeam, Player player){
+        // get key from value
+        for(Team team : mTeamPlayers.keySet()){
+            if(team.getName().equals(playerTeam.getName())){
+                mTeamPlayers.get(team).add(player);
+            }
+        }
+
         notifyDataSetChanged();
     }
 
@@ -98,7 +106,8 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
         }
 
         Team team = (Team) getGroup(groupPosition);
-        viewHolder.teamName.setText(team.getName() + " (" + getChildrenCount(groupPosition) + " players)");
+        viewHolder.setTeamName(team.getName());
+        viewHolder.teamNameTextView.setText(viewHolder.getTeamName() + " (" + getChildrenCount(groupPosition) + " players)");
 
         return convertView;
     }
@@ -127,19 +136,27 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
     }
 
     public class TeamViewHolder implements View.OnClickListener{
-        public final TextView teamName;
+        public final TextView teamNameTextView;
+        private String teamName = "";
         private final Button joinTeam;
 
         public TeamViewHolder(View view){
-            teamName = (TextView) view.findViewById(R.id.team_name);
+            teamNameTextView = (TextView) view.findViewById(R.id.team_name);
             joinTeam = (Button) view.findViewById(R.id.join_team);
             joinTeam.setOnClickListener(this);
         }
 
+        public void setTeamName(String teamName){
+            this.teamName = teamName;
+        }
+
+        public String getTeamName(){
+            return teamName;
+        }
+
         @Override
         public void onClick(View v) {
-            //TODO: Remove hard coded game name.
-            DialogFragment enterNameDialog = EnterNameDialog.NewInstance(teamName.getText().toString(), mGameName);
+            DialogFragment enterNameDialog = EnterNameDialog.NewInstance(getTeamName(), mGameName);
             enterNameDialog.show(((AppCompatActivity)mContext).getSupportFragmentManager(), "enterName");
         }
     }
