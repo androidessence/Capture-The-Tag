@@ -14,11 +14,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StartGameActivity extends AppCompatActivity {
     private LinearLayout mTeamLayout;
-    private List<EditText> mTeamEditTexts;
+    private List<EditText> mTeamEditTexts =  new ArrayList<>();
     private Button mAddTeam;
 
     @Override
@@ -71,6 +72,6 @@ public class StartGameActivity extends AppCompatActivity {
 
         mTeamEditTexts.add(editText);
         textInputLayout.addView(editText);
-        mTeamLayout.addView(editText);
+        mTeamLayout.addView(textInputLayout);
     }
 }

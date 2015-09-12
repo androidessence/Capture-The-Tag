@@ -4,5 +4,8 @@
     <item
         android:id="@+id/action_flag_write"
         android:title="@string/title_activity_flag_write"
-        app:showAsAction="always"/>
+        app:showAsAction="never"/>
+    <item android:id="@+id/action_start_game"
+        android:title="@string/title_activity_start_game"
+        app:showAsAction="never"/>
 </menu>
