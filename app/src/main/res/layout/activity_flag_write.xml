@@ -17,14 +17,16 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:text="New Button">
 
             <EditText
                 android:id="@+id/flag_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="text"
-                android:hint="@string/flag_name_hint"/>
+                android:hint="@string/flag_name_hint"
+                android:imeOptions="actionDone"/>
 
         </android.support.design.widget.TextInputLayout>
 
