@@ -10,7 +10,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import adammcneilly.capturethetag.Utilities.GameUtility;
 
 public class StartGameActivity extends AppCompatActivity {
     private LinearLayout mTeamLayout;
@@ -70,11 +73,15 @@ public class StartGameActivity extends AppCompatActivity {
 
         Intent gameLobbyIntent = new Intent(StartGameActivity.this, GameLobbyActivity.class);
         gameLobbyIntent.putExtra(GameLobbyActivity.ARG_GAME, mGameName.getText().toString());
+        List<Team> teams = new ArrayList<>();
         String[] teamNames = new String[mTeamEditTexts.size()];
         for(int i = 0; i < teamNames.length; i++){
-            teamNames[i] = mTeamEditTexts.get(i).getText().toString();
+            String teamName = mTeamEditTexts.get(i).getText().toString();
+            teams.add(new Team(teamName));
+            teamNames[i] = teamName;
         }
         gameLobbyIntent.putExtra(GameLobbyActivity.ARG_TEAMS, teamNames);
+        new GameUtility().addGame(mGameName.getText().toString(), teams);
         startActivity(gameLobbyIntent);
     }
 
