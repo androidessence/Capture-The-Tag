@@ -35,12 +35,13 @@ public class StartGameActivity extends AppCompatActivity {
         getUIElements();
 
         // Set click listener on button
-        mAddTeam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addEditText();
-            }
-        });
+        // Commented out. This is a stretch goal.
+//        mAddTeam.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                addEditText();
+//            }
+//        });
     }
 
     private void getUIElements(){
@@ -50,28 +51,31 @@ public class StartGameActivity extends AppCompatActivity {
         mAddTeam = (Button) findViewById(R.id.add_team);
     }
 
-    private void addEditText(){
-        // The new team's id is the size of mTeamEditTexts + 1.
-        int newTeamNumber = mTeamEditTexts.size() + 1;
-
-        // Create TIL and set width to match_parent and height to wrap_content
-        TextInputLayout textInputLayout = new TextInputLayout(this);
-        textInputLayout.setLayoutParams(
-                new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        // Create ET and set width to match_parent and height to match_parent.
-        // The hint is 'team x name'
-        EditText editText = new EditText(this);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        layoutParams.setMargins(0, 0, 0, 16);
-        editText.setLayoutParams(layoutParams);
-        editText.setInputType(InputType.TYPE_CLASS_TEXT);
-        editText.setHint("Team " + newTeamNumber + " name");
-
-        mTeamEditTexts.add(editText);
-        textInputLayout.addView(editText);
-        mTeamLayout.addView(textInputLayout);
-    }
+    /**
+     * Adding of teams has been commented out as a stretch goal.
+     */
+//    private void addEditText(){
+//        // The new team's id is the size of mTeamEditTexts + 1.
+//        int newTeamNumber = mTeamEditTexts.size() + 1;
+//
+//        // Create TIL and set width to match_parent and height to wrap_content
+//        TextInputLayout textInputLayout = new TextInputLayout(this);
+//        textInputLayout.setLayoutParams(
+//                new LinearLayout.LayoutParams(
+//                        LinearLayout.LayoutParams.MATCH_PARENT,
+//                        LinearLayout.LayoutParams.WRAP_CONTENT));
+//
+//        // Create ET and set width to match_parent and height to match_parent.
+//        // The hint is 'team x name'
+//        EditText editText = new EditText(this);
+//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+//        layoutParams.setMargins(0, 0, 0, 16);
+//        editText.setLayoutParams(layoutParams);
+//        editText.setInputType(InputType.TYPE_CLASS_TEXT);
+//        editText.setHint("Team " + newTeamNumber + " name");
+//
+//        mTeamEditTexts.add(editText);
+//        textInputLayout.addView(editText);
+//        mTeamLayout.addView(textInputLayout);
+//    }
 }

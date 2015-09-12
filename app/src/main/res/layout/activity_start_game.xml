@@ -52,7 +52,10 @@
 
             </LinearLayout>
 
+            <!-- Visibility set to gone temporarily.
+             Adding teams is now a stretch goal.-->
             <Button
+                android:visibility="gone"
                 android:id="@+id/add_team"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
