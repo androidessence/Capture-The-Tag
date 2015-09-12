@@ -22,15 +22,18 @@ public class EnterNameDialog extends DialogFragment {
     private TextView mTitle;
     private String mTeamName;
     private String mGameName;
+    private boolean mCaptain;
 
     public static final String ARG_TEAM = "team";
     public static final String ARG_GAME = "game";
+    public static final String ARG_CAPTAIN = "captain";
 
-    public static EnterNameDialog NewInstance(String teamName, String gameName){
+    public static EnterNameDialog NewInstance(String teamName, String gameName, boolean isCaptain){
         EnterNameDialog dialogFragment = new EnterNameDialog();
         Bundle args = new Bundle();
         args.putString(ARG_TEAM, teamName);
         args.putString(ARG_GAME, gameName);
+        args.putBoolean(ARG_CAPTAIN, isCaptain);
         dialogFragment.setArguments(args);
         return dialogFragment;
     }
@@ -65,7 +68,12 @@ public class EnterNameDialog extends DialogFragment {
             mPlayerName.setError("Name cannot be blank.");
             return;
         }
-        new PlayerUtility().AddPlayer(mGameName, mTeamName, mPlayerName.getText().toString());
+
+        if(mCaptain){
+            new PlayerUtility().AddPlayerAsCaptain(mGameName, mTeamName, mPlayerName.getText().toString());
+        } else{
+            new PlayerUtility().AddPlayer(mGameName, mTeamName, mPlayerName.getText().toString());
+        }
         dismiss();
     }
 
@@ -74,6 +82,7 @@ public class EnterNameDialog extends DialogFragment {
         super.onCreate(savedInstanceState);
         mTeamName = getArguments().getString(ARG_TEAM);
         mGameName = getArguments().getString(ARG_GAME);
+        mCaptain = getArguments().getBoolean(ARG_CAPTAIN);
     }
 
     private void getUIElements(View view){

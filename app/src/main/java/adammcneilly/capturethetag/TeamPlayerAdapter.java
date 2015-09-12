@@ -107,6 +107,7 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
 
         Team team = (Team) getGroup(groupPosition);
         viewHolder.setTeamName(team.getName());
+        viewHolder.setTeamPosition(groupPosition);
         viewHolder.teamNameTextView.setText(viewHolder.getTeamName() + " (" + getChildrenCount(groupPosition) + " players)");
 
         return convertView;
@@ -138,6 +139,7 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
     public class TeamViewHolder implements View.OnClickListener{
         public final TextView teamNameTextView;
         private String teamName = "";
+        private int teamPosition;
         private final Button joinTeam;
 
         public TeamViewHolder(View view){
@@ -150,13 +152,18 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
             this.teamName = teamName;
         }
 
+        public void setTeamPosition(int position){
+            this.teamPosition = position;
+        }
+
         public String getTeamName(){
             return teamName;
         }
 
         @Override
         public void onClick(View v) {
-            DialogFragment enterNameDialog = EnterNameDialog.NewInstance(getTeamName(), mGameName);
+            boolean isCaptain = getChildrenCount(teamPosition) == 0;
+            DialogFragment enterNameDialog = EnterNameDialog.NewInstance(getTeamName(), mGameName, isCaptain);
             enterNameDialog.show(((AppCompatActivity)mContext).getSupportFragmentManager(), "enterName");
         }
     }

@@ -3,8 +3,8 @@
     package="adammcneilly.capturethetag" >
 
     <uses-permission android:name="android.permission.NFC" />
-    <uses-permission android:name="android.permission.NFC"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -33,6 +33,10 @@
         <activity
             android:name=".GameLobbyActivity"
             android:label="@string/title_activity_game_lobby" >
+        </activity>
+        <activity
+            android:name=".ReadFlagActivity"
+            android:label="@string/title_activity_read_flag" >
         </activity>
     </application>
 
