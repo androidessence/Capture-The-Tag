@@ -12,4 +12,7 @@
     <string name="add_team">Add Team</string>
     <string name="submit">Submit</string>
     <string name="game_name_hint">Game Name</string>
+    <string name="join">Join</string>
+    <string name="title_activity_game_lobby">Game Lobby</string>
+    <string name="start">Start</string>
 </resources>

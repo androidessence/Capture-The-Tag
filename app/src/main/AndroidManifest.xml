@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="adammcneilly.capturethetag" >
 
+    <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.NFC"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -25,9 +26,13 @@
         </activity>
         <activity
             android:name=".StartGameActivity"
-            android:label="@string/title_activity_start_game"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:windowSoftInputMode="adjustPan">
+            android:label="@string/title_activity_start_game"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name=".GameLobbyActivity"
+            android:label="@string/title_activity_game_lobby" >
         </activity>
     </application>
 

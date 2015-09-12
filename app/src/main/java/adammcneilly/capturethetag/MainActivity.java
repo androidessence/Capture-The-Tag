@@ -34,8 +34,13 @@ public class MainActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.action_flag_write:
                 startFlagWriteActivity();
+                return true;
             case R.id.action_start_game:
                 startStartGameActivity();
+                return true;
+            case R.id.action_game_lobby:
+                startGameLobbyActivity();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -55,5 +60,10 @@ public class MainActivity extends AppCompatActivity {
     private void startStartGameActivity(){
         Intent startGameIntent = new Intent(MainActivity.this, StartGameActivity.class);
         startActivity(startGameIntent);
+    }
+
+    private void startGameLobbyActivity(){
+        Intent gameLobbyIntent = new Intent(MainActivity.this, GameLobbyActivity.class);
+        startActivity(gameLobbyIntent);
     }
 }
