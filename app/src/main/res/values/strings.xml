@@ -7,4 +7,7 @@
     <string name="flag_name_hint">Flag Name</string>
     <string name="approach_tag_label">Approach Tag To Program&#8230;</string>
     <string name="title_activity_start_game">Start Game</string>
+    <string name="team_one_hint">Team 1 name</string>
+    <string name="team_two_hint">Team 2 name</string>
+    <string name="add_team">Add Team</string>
 </resources>
