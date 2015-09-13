@@ -38,18 +38,21 @@ import adammcneilly.capturethetag.Utilities.PlayerUtility;
 
 public class ReadFlagActivity extends AppCompatActivity {
     private static final String MIME_TEXT_PLAIN = "application/adammcneilly.capturethetag";
-    private TextView mTextView;
+    private TextView mFlagMessage;
+    private TextView mScan;
     private NfcAdapter mNFCAdapter;
     private static final String TAG = ReadFlagActivity.class.getSimpleName();
     private List<Flag> mFlags = new ArrayList<>();
+    private HashMap<String, List<Flag>> mTeamFlags = new HashMap<>();
     private Flag myCarriedFlag;
+    private TextView mFlagsRemaining;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read_flag);
-        mTextView = (TextView) findViewById(R.id.response);
+        mFlagMessage = (TextView) findViewById(R.id.flag_message);
 
         mNFCAdapter = NfcAdapter.getDefaultAdapter(this);
 
@@ -66,6 +69,9 @@ public class ReadFlagActivity extends AppCompatActivity {
         for(Team team : Global.currentTeams){
             initTeamFlagListener(team.getName());
         }
+
+        mFlagsRemaining = (TextView) findViewById(R.id.flags_remaining);
+        mScan = (TextView) findViewById(R.id.scan_ready);
     }
 
     @Override
@@ -80,7 +86,7 @@ public class ReadFlagActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    private void initTeamFlagListener(String teamName){
+    private void initTeamFlagListener(final String teamName){
         Firebase flagsRef = new Firebase(Global.FirebaseURl).child(Global.currentGame).child(teamName).child(Global.FLAGS);
         flagsRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -88,7 +94,17 @@ public class ReadFlagActivity extends AppCompatActivity {
                 String serial = dataSnapshot.getKey();
                 String flagName = dataSnapshot.child("flagName").getValue().toString();
                 String status = dataSnapshot.child("status").getValue().toString();
-                mFlags.add(new Flag(flagName, serial, Global.FlagStatus.valueOf(status)));
+                Flag newFlag = new Flag(flagName, serial, Global.FlagStatus.valueOf(status), teamName);
+                mFlags.add(newFlag);
+                if (mTeamFlags.containsKey(teamName)) {
+                    mTeamFlags.get(teamName).add(newFlag);
+                } else {
+                    List<Flag> flagList = new ArrayList<Flag>();
+                    flagList.add(newFlag);
+                    mTeamFlags.put(teamName, flagList);
+                }
+
+                getRemainingFlags();
             }
 
             @Override
@@ -103,6 +119,7 @@ public class ReadFlagActivity extends AppCompatActivity {
                     }
                 }
 
+                getRemainingFlags();
             }
 
             @Override
@@ -120,6 +137,22 @@ public class ReadFlagActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void getRemainingFlags(){
+        // Any flags that don't belong to the current user's team that are not completed are available
+        int flagCount = 0;
+        for(Flag flag : mFlags){
+            if(!flag.getTeamName().equals(Global.currentPlayer.getTeamName()) && flag.getStatus() != Global.FlagStatus.Captured){
+                flagCount++;
+            }
+        }
+
+        mFlagsRemaining.setText(flagCount + " flags remaining.");
+        if(flagCount == 0){
+            mFlagMessage.setText("");
+            mScan.setText("Congratulations! You won!");
+        }
     }
 
     @Override
@@ -272,6 +305,7 @@ public class ReadFlagActivity extends AppCompatActivity {
                                 new PlayerUtility().setCapturedFlag(gameName, Global.currentPlayer.getTeamName(), Global.currentPlayer.getName(), result);
                                 flag.setTeamName(teamName);
                                 myCarriedFlag = flag;
+                                mFlagMessage.setText("Enemy flag captured! Hurry home!");
                             }
                         }
                     }
@@ -286,16 +320,10 @@ public class ReadFlagActivity extends AppCompatActivity {
                         // Remove from user
                         new PlayerUtility().RemoveCapturedFlagFromUser(gameName, Global.currentPlayer.getTeamName(), Global.currentPlayer.getName());
                         myCarriedFlag = null;
+                        mFlagMessage.setText("Enemy flag returned. Great work!");
                     }
 
                 }
-            }
-
-            if (result != null) {
-                mTextView.setText("Good work soldier, you've scanned a flag. I've added some details about the flag below, bring it to home base and we'll take care of the enemy. \n\nFlag Name:" + flagName + "\n\nTeam Creator:" + teamName);
-
-                //new FlagUtility().SetFlagCapturedStatus(gameName, teamName, flagName, Global.FlagStatus.In_Progress);
-                //new PlayerUtility().SetCapturedFlag(gameName, teamName, Global.currentPlayer.getName(), result);
             }
 
         }

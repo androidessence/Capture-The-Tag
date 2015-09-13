@@ -7,28 +7,28 @@
 
     <include layout="@layout/toolbar"/>
 
-    <RelativeLayout
-        android:layout_height="0dp"
+    <TextView
+        android:id="@+id/flags_remaining"
         android:layout_width="match_parent"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:gravity="center_horizontal"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/scan_ready"
-            android:id="@+id/scan_ready"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/scan_ready"
+        android:padding="32dp"
+        android:id="@+id/scan_ready"/>
 
-        <TextView
-            android:id="@+id/response"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_below="@+id/scan_ready"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"/>
-    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:padding="8dp"
+        android:id="@+id/flag_message"
+        android:gravity="center_horizontal"/>
+
 </LinearLayout>
