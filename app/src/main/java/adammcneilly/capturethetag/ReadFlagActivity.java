@@ -195,6 +195,11 @@ public class ReadFlagActivity extends AppCompatActivity {
             String teamName = data[1];
             String flagName = data[2];
 
+            // If the team name of the flag is not the team name of the person, set it as in progress
+            if(!teamName.equals(Global.currentPlayer.getTeamName())){
+                new FlagUtility().SetFlagCapturedStatus(gameName, teamName, flagName, Global.FlagStatus.In_Progress);
+            }
+
             if (result != null) {
                 mTextView.setText("Good work soldier, you've scanned a flag. I've added some details about the flag below, bring it to home base and we'll take care of the enemy. \n\nFlag Name:" + flagName + "\n\nTeam Creator:" + teamName);
             }
