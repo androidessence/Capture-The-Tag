@@ -19,6 +19,7 @@ import java.lang.reflect.Array;
 import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -28,6 +29,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder>{
     private Context mContext;
     private List<Game> mGames;
     private Firebase mFirebase;
+    private HashMap<String, List<String>> mGameTeams = new HashMap<>();
 
     public GameAdapter(Context context){
         this.mContext = context;
@@ -36,12 +38,14 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder>{
     }
 
     private void monitorGames(){
+        // Monitors games.
         mFirebase = new Firebase(Global.FirebaseURl);
         mFirebase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 String gameName = dataSnapshot.getKey();
                 mGames.add(new Game(gameName));
+                monitorTeams(gameName);
                 notifyDataSetChanged();
             }
 
@@ -74,6 +78,45 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder>{
         });
     }
 
+    private void monitorTeams(final String gameName){
+        Firebase mTeams = mFirebase.child(gameName);
+        mTeams.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if(mGameTeams.containsKey(gameName)){
+                    mGameTeams.get(gameName).add(dataSnapshot.getKey());
+                } else{
+                    List<String> stringList = new ArrayList<String>();
+                    stringList.add(dataSnapshot.getKey());
+                    mGameTeams.put(gameName, stringList);
+                }
+
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                mGameTeams.get(gameName).remove(dataSnapshot.getKey());
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.list_item_game, parent, false);
@@ -84,6 +127,16 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder>{
     public void onBindViewHolder(ViewHolder holder, int position) {
         Game game = mGames.get(position);
         holder.gameNameTextView.setText(game.getName());
+
+        int numTeams = 0;
+        for(String str : mGameTeams.keySet()){
+            if(str.equals(game.getName())){
+                numTeams = mGameTeams.get(str).size();
+                break;
+            }
+        }
+
+        holder.teamCountTextView.setText(numTeams + " teams");
     }
 
     @Override
@@ -94,11 +147,13 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder>{
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public final TextView gameNameTextView;
         public final Button joinGameButton;
+        public final TextView teamCountTextView;
 
         public ViewHolder(View view){
             super(view);
             gameNameTextView = (TextView) view.findViewById(R.id.game_name);
             joinGameButton = (Button) view.findViewById(R.id.join_game);
+            teamCountTextView = (TextView) view.findViewById(R.id.game_teams);
             joinGameButton.setOnClickListener(this);
         }
 

@@ -41,10 +41,6 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
         for(Team team : mTeamPlayers.keySet()){
             if(team.getName().equals(playerTeam.getName())){
                 mTeamPlayers.get(team).add(player);
-                if (mTeamPlayers.get(team).size() == 1)
-                {
-                    // TODO: Add crown to player item (on left hand side)
-                }
             }
         }
 
@@ -208,6 +204,7 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
             if(joinTeam.getText().toString().equals(mContext.getResources().getString(R.string.join))){
                 boolean isCaptain = getChildrenCount(teamPosition) == 0;
                 Global.currentPlayer.setTeamName(teamName);
+                Global.currentPlayer.setIsCaptain(isCaptain);
                 if(isCaptain){
                     new PlayerUtility().AddPlayerAsCaptain(mGameName, Global.currentPlayer.getTeamName(), Global.currentPlayer.getName());
                 } else{

@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.firebase.client.Firebase;
+
 public class LoginActivity extends AppCompatActivity {
     private EditText mPlayerName;
     private Button mJoinGame;
@@ -19,6 +21,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        Firebase.setAndroidContext(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -39,10 +43,28 @@ public class LoginActivity extends AppCompatActivity {
                 startGameListActivity();
             }
         });
+        mStartGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mPlayerName.getText().toString().isEmpty()){
+                    mPlayerName.setError("Name cannot be blank.");
+                    return;
+                } else{
+                    Global.currentPlayer = new Player(mPlayerName.getText().toString());
+                }
+
+                startNewGameActivity();
+            }
+        });
     }
 
     private void startGameListActivity(){
         Intent gameListIntent = new Intent(LoginActivity.this, GameListActivity.class);
         startActivity(gameListIntent);
+    }
+
+    private void startNewGameActivity(){
+        Intent newGameIntent = new Intent(LoginActivity.this, StartGameActivity.class);
+        startActivity(newGameIntent);
     }
 }

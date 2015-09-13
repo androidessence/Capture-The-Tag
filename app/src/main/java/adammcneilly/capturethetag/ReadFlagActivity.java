@@ -21,8 +21,16 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 import adammcneilly.capturethetag.Utilities.FlagUtility;
 import adammcneilly.capturethetag.Utilities.GameUtility;
@@ -33,7 +41,7 @@ public class ReadFlagActivity extends AppCompatActivity {
     private TextView mTextView;
     private NfcAdapter mNFCAdapter;
     private static final String TAG = ReadFlagActivity.class.getSimpleName();
-
+    private List<Flag> mFlags = new ArrayList<>();
 
 
     @Override
@@ -53,6 +61,10 @@ public class ReadFlagActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        for(Team team : Global.currentTeams){
+            initTeamFlagListener(team.getName());
+        }
     }
 
     @Override
@@ -65,6 +77,48 @@ public class ReadFlagActivity extends AppCompatActivity {
     protected void onPause() {
         setupForegroundDispatch(this, mNFCAdapter);
         super.onPause();
+    }
+
+    private void initTeamFlagListener(String teamName){
+        Firebase flagsRef = new Firebase(Global.FirebaseURl).child(Global.currentGame).child(teamName).child(Global.FLAGS);
+        flagsRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String serial = dataSnapshot.getKey();
+                String flagName = dataSnapshot.child("flagName").getValue().toString();
+                String status = dataSnapshot.child("status").getValue().toString();
+                mFlags.add(new Flag(flagName, serial, Global.FlagStatus.valueOf(status)));
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                // Only update our flag
+                String serial = dataSnapshot.getKey();
+                // my day if off but it's fair for those flying:
+                for(Flag f : mFlags){
+                    if(f.getSerialNumber().equals(serial)){
+                        f.setName(dataSnapshot.child("flagName").getValue().toString());
+                        f.setStatus(Global.FlagStatus.valueOf(dataSnapshot.child("status").getValue().toString()));
+                    }
+                }
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -207,13 +261,16 @@ public class ReadFlagActivity extends AppCompatActivity {
                 // If flag is not mine
                 if (!teamName.equals(Global.currentPlayer.getTeamName()))
                 {
-                    // If flag is not captured
-                    if (new FlagUtility().GetFlagStatus(gameName, teamName, this.TagSerial) == Global.FlagStatus.Not_Captured)
-                    {
-                        // Update status of the flag
-                        new FlagUtility().SetFlagCapturedStatus(gameName, teamName, this.TagSerial, Global.FlagStatus.In_Progress);
-                        // Give the currentUser the flag
-                        new PlayerUtility().setCapturedFlag(gameName, teamName, Global.currentPlayer.getName(), result);
+                    // Find our flag
+                    for(Flag flag : mFlags){
+                        if(flag.getSerialNumber().equals(TagSerial)){
+                            if(flag.getStatus() == Global.FlagStatus.Not_Captured){
+                                // Update status of the flag
+                                new FlagUtility().SetFlagCapturedStatus(gameName, teamName, this.TagSerial, Global.FlagStatus.In_Progress);
+                                // Give the currentUser the flag
+                                new PlayerUtility().setCapturedFlag(gameName, teamName, Global.currentPlayer.getName(), result);
+                            }
+                        }
                     }
                 }
                 // It is mine

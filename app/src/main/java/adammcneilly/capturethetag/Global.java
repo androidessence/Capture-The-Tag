@@ -1,5 +1,7 @@
 package adammcneilly.capturethetag;
 
+import java.util.List;
+
 /**
  * Created by zadekaakarni on 9/12/15.
  */
@@ -20,6 +22,7 @@ public class Global {
     public static Player currentPlayer;
 
     public static String currentGame;
+    public static List<Team> currentTeams;
 
     public enum FlagStatus
     {

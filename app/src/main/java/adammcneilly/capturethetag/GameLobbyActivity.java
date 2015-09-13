@@ -17,9 +17,8 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import adammcneilly.capturethetag.Utilities.FlagUtility;
 
 public class GameLobbyActivity extends AppCompatActivity {
     private ExpandableListView mExpandableListView;
@@ -28,6 +27,7 @@ public class GameLobbyActivity extends AppCompatActivity {
     private List<Team> mTeams = new ArrayList<>();
     private TeamPlayerAdapter mAdapter;
     private Button mStart;
+    private HashMap<String, List<String>> mTeamFlags = new HashMap<>();
 
     public static final String ARG_GAME = "game";
 
@@ -64,6 +64,16 @@ public class GameLobbyActivity extends AppCompatActivity {
                         return;
                     }
                 }
+
+                if(mTeamFlags.keySet().size() != mTeams.size()){
+                    Toast.makeText(getApplicationContext(), "Each team must have at least one flag.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // Data must have been valid, start read activity
+                Global.currentTeams = mTeams;
+                Intent readFlagIntent = new Intent(GameLobbyActivity.this, ReadFlagActivity.class);
+                startActivity(readFlagIntent);
             }
         });
     }
@@ -86,6 +96,7 @@ public class GameLobbyActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 mAdapter.insertTeam(new Team(dataSnapshot.getKey()));
                 InitTeamPlayerListener(dataSnapshot.getKey());
+                InitTeamFlagListener(dataSnapshot.getKey());
                 mAdapter.notifyDataSetChanged();
             }
 
@@ -134,6 +145,43 @@ public class GameLobbyActivity extends AppCompatActivity {
                 String name = dataSnapshot.getKey();
                 mAdapter.removePlayer(new Team(teamName), new Player(name));
                 invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    private void InitTeamFlagListener(final String teamName){
+        Firebase flagRef = ref.child(mGameName).child(teamName).child(Global.FLAGS);
+        flagRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                // Add to team flags
+                if(mTeamFlags.get(teamName) != null){
+                    mTeamFlags.get(teamName).add(dataSnapshot.getKey());
+                } else{
+                    List<String> str = new ArrayList<>();
+                    str.add(dataSnapshot.getKey());
+                    mTeamFlags.put(teamName, str);
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
             }
 
             @Override
