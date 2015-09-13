@@ -15,16 +15,18 @@ public class Global {
     public static String SERIAL = "serial";
     public static String FLAG = "flag";
     public static String FLAG_NAME = "flagName";
+    public static String SCORE = "score";
 
     public static Player currentPlayer;
 
-
+    public static String currentGame;
 
     public enum FlagStatus
     {
         Not_Captured,
         In_Progress,
-        Captured
+        Captured,
+        NA
     }
 
     public static String ByteArrToSerial(byte[] arr)

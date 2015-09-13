@@ -25,6 +25,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 import adammcneilly.capturethetag.Utilities.FlagUtility;
+import adammcneilly.capturethetag.Utilities.GameUtility;
+import adammcneilly.capturethetag.Utilities.PlayerUtility;
 
 public class ReadFlagActivity extends AppCompatActivity {
     private static final String MIME_TEXT_PLAIN = "application/adammcneilly.capturethetag";
@@ -126,9 +128,13 @@ public class ReadFlagActivity extends AppCompatActivity {
 
     private class NdefReaderTask extends AsyncTask<Tag, Void, String> {
 
+        private String TagSerial = "";
+
         @Override
         protected String doInBackground(Tag... params) {
             Tag tag = params[0];
+
+            this.TagSerial = Global.ByteArrToSerial(tag.getId()).toString();
 
             Ndef ndef = Ndef.get(tag);
             if (ndef == null) {
@@ -195,14 +201,52 @@ public class ReadFlagActivity extends AppCompatActivity {
             String teamName = data[1];
             String flagName = data[2];
 
-            // If the team name of the flag is not the team name of the person, set it as in progress
-            if(!teamName.equals(Global.currentPlayer.getTeamName())){
-                new FlagUtility().SetFlagCapturedStatus(gameName, teamName, flagName, Global.FlagStatus.In_Progress);
+            // Make sure we are in the right game
+            if (gameName.equals(Global.currentGame))
+            {
+                // If flag is not mine
+                if (!teamName.equals(Global.currentPlayer.getTeamName()))
+                {
+                    // If flag is not captured
+                    if (new FlagUtility().GetFlagStatus(gameName, teamName, this.TagSerial) == Global.FlagStatus.Not_Captured)
+                    {
+                        // Update status of the flag
+                        new FlagUtility().SetFlagCapturedStatus(gameName, teamName, this.TagSerial, Global.FlagStatus.In_Progress);
+                        // Give the currentUser the flag
+                        new PlayerUtility().setCapturedFlag(gameName, teamName, Global.currentPlayer.getName(), result);
+                    }
+                }
+                // It is mine
+                else
+                {
+                    // If I have a flag
+                    if (!(new PlayerUtility().GetPlayersCapturedFlagInfo(gameName, teamName, Global.currentPlayer.getName()))
+                        .equals(""))
+                    {
+                        String[] capturedFlagInfo = new PlayerUtility().GetPlayersCapturedFlagInfo(gameName, teamName, Global.currentPlayer.getName()).split(",");
+                        // Set that flag as captured
+                        new FlagUtility().SetFlagCapturedStatus(gameName, capturedFlagInfo[1], capturedFlagInfo[3], Global.FlagStatus.Captured);
+                        // Remove flag from currentUser
+                        new PlayerUtility().RemoveCapturedFlagFromUser(gameName, teamName, Global.currentPlayer.getName());
+                        // Increment team score
+                        //new GameUtility().IncrementScore(gameName, teamName);
+                    }
+
+                }
             }
 
             if (result != null) {
                 mTextView.setText("Good work soldier, you've scanned a flag. I've added some details about the flag below, bring it to home base and we'll take care of the enemy. \n\nFlag Name:" + flagName + "\n\nTeam Creator:" + teamName);
+
+                //new FlagUtility().SetFlagCapturedStatus(gameName, teamName, flagName, Global.FlagStatus.In_Progress);
+                //new PlayerUtility().SetCapturedFlag(gameName, teamName, Global.currentPlayer.getName(), result);
             }
+
+        }
+
+        public void RunGameConditionals()
+        {
+
         }
     }
 }

@@ -1,6 +1,10 @@
 package adammcneilly.capturethetag.Utilities;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.MutableData;
+import com.firebase.client.Transaction;
 
 import java.util.List;
 
@@ -21,4 +25,5 @@ public class GameUtility {
         for (Team t : teams)
             gameRef.child(t.getName()).setValue("temp");
     }
+
 }

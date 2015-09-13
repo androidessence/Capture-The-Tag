@@ -96,4 +96,9 @@ public class PlayerUtility {
     {
         new Firebase(Global.FirebaseURl).child(gameName).child(teamName).child(playerName).child(Global.FLAG).removeValue();
     }
+
+    public void setCapturedFlag(String gameName, String teamName, String playerName, String flagData)
+    {
+        new Firebase(Global.FirebaseURl).child(gameName).child(teamName).child(playerName).child(Global.FLAG).setValue(flagData);
+    }
 }

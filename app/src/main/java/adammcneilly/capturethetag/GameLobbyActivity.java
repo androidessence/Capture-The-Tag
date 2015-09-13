@@ -19,6 +19,8 @@ import com.firebase.client.FirebaseError;
 import java.util.ArrayList;
 import java.util.List;
 
+import adammcneilly.capturethetag.Utilities.FlagUtility;
+
 public class GameLobbyActivity extends AppCompatActivity {
     private ExpandableListView mExpandableListView;
     private Firebase ref;
@@ -39,6 +41,8 @@ public class GameLobbyActivity extends AppCompatActivity {
 
         // Get game name and team names
         mGameName = getIntent().getStringExtra(ARG_GAME);
+
+        Global.currentGame = mGameName;
 
         setTitle(mGameName + " Game Lobby");
 

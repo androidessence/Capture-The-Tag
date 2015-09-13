@@ -37,6 +37,8 @@ public class FlagWriteActivity extends AppCompatActivity {
 
     String mimeType = "application/adammcneilly.capturethetag";
 
+    private String tagSerial;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,10 +97,11 @@ public class FlagWriteActivity extends AppCompatActivity {
 
             if (writeTag(message, detectedTag)) {
 
+                this.tagSerial = Global.ByteArrToSerial(detectedTag.getId());
                 new FlagUtility().AddFlag(
                         mGameName,
                         mTeamName,
-                        Global.ByteArrToSerial(detectedTag.getId()),
+                        this.tagSerial,
                         flagName.getText().toString());
 
                 Toast.makeText(this, "Success: Wrote placeid to nfc tag", Toast.LENGTH_LONG)
@@ -150,6 +153,6 @@ public class FlagWriteActivity extends AppCompatActivity {
     }
 
     public String getFlagString(){
-        return mGameName + "," + mTeamName + "," + flagName.getText().toString();
+        return mGameName + "," + mTeamName + "," + flagName.getText().toString() + "," + this.tagSerial;
     }
 }
