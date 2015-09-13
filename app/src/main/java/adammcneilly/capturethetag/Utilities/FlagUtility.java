@@ -8,7 +8,7 @@ import com.firebase.client.Firebase;
  */
 public class FlagUtility {
 
-    public void AddFlag(String gameName, String teamName, String flagName, String tagSerial)
+    public void AddFlag(String gameName, String teamName, String tagSerial, String flagName)
     {
         SetFlagCapturedStatus(gameName, teamName, tagSerial, Global.FlagStatus.Not_Captured);
         SetFlagName(gameName, teamName, tagSerial, flagName);
