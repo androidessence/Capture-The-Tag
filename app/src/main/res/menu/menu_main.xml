@@ -14,4 +14,7 @@
     <item android:id="@+id/action_game_list"
         android:title="@string/title_activity_game_list"
         app:showAsAction="never"/>
+    <item android:id="@+id/action_login"
+        android:title="@string/title_activity_login"
+        app:showAsAction="never"/>
 </menu>

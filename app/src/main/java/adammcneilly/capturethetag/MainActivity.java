@@ -44,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_game_list:
                 startGameListActivity();
                 return true;
+            case R.id.action_login:
+                startLoginActivity();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -78,5 +81,10 @@ public class MainActivity extends AppCompatActivity {
     private void startGameListActivity(){
         Intent gameListIntent = new Intent(MainActivity.this, GameListActivity.class);
         startActivity(gameListIntent);
+    }
+
+    private void startLoginActivity(){
+        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(loginIntent);
     }
 }
