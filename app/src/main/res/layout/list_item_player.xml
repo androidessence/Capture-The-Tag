@@ -17,14 +17,15 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:padding="8dp"
+        android:gravity="center_vertical"
         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     <ImageView
         android:id="@+id/captain_image"
-        android:layout_width="56dp"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
         android:src="@mipmap/ic_captain"
-        android:padding="16dp"
+        android:padding="8dp"
         android:visibility="gone"/>
 
 </LinearLayout>

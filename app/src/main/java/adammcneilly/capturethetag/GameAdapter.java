@@ -135,8 +135,6 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder>{
                 break;
             }
         }
-
-        holder.teamCountTextView.setText(numTeams + " teams");
     }
 
     @Override
@@ -147,13 +145,11 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder>{
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public final TextView gameNameTextView;
         public final Button joinGameButton;
-        public final TextView teamCountTextView;
 
         public ViewHolder(View view){
             super(view);
             gameNameTextView = (TextView) view.findViewById(R.id.game_name);
             joinGameButton = (Button) view.findViewById(R.id.join_game);
-            teamCountTextView = (TextView) view.findViewById(R.id.game_teams);
             joinGameButton.setOnClickListener(this);
         }
 

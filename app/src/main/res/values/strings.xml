@@ -26,4 +26,5 @@
     <string name="title_activity_login">CTT Login</string>
     <string name="join_game">Join Game</string>
     <string name="create_game">Create Game</string>
+    <string name="enter_tag_name_label">Enter Tag Name&#8230;</string>
 </resources>

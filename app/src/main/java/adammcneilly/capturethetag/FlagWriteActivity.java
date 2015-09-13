@@ -14,7 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -28,6 +30,7 @@ public class FlagWriteActivity extends AppCompatActivity {
     private NfcAdapter mNfcAdapter;
     private PendingIntent mNfcPendingIntent;
     EditText flagName;
+    private TextView mTapTag;
 
     private String mGameName;
     private String mTeamName;
@@ -48,6 +51,7 @@ public class FlagWriteActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         flagName = (EditText) findViewById(R.id.flag_name);
+        mTapTag = (TextView) findViewById(R.id.tap_tag);
 
         flagName.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -58,7 +62,9 @@ public class FlagWriteActivity extends AppCompatActivity {
 
                 enableTagWriteMode();
 
-//                new AlertDialog.Builder(FlagWriteActivity.this).setTitle("Touch tag to write")
+                mTapTag.setText(getResources().getString(R.string.approach_tag_label));
+
+                //                new AlertDialog.Builder(FlagWriteActivity.this).setTitle("Touch tag to write")
 //                        .setOnCancelListener(new DialogInterface.OnCancelListener() {
 //                            @Override
 //                            public void onCancel(DialogInterface dialog) {
@@ -73,6 +79,8 @@ public class FlagWriteActivity extends AppCompatActivity {
 
         mGameName = getIntent().getStringExtra(ARG_GAME);
         mTeamName = getIntent().getStringExtra(ARG_TEAM);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void enableTagWriteMode() {
@@ -104,8 +112,7 @@ public class FlagWriteActivity extends AppCompatActivity {
                         this.tagSerial,
                         flagName.getText().toString());
 
-                Toast.makeText(this, "Success: Wrote placeid to nfc tag", Toast.LENGTH_LONG)
-                        .show();
+                mTapTag.setText("Successfully wrote tag " + flagName.getText().toString() + "!");
             }
         }
     }
@@ -154,5 +161,16 @@ public class FlagWriteActivity extends AppCompatActivity {
 
     public String getFlagString(){
         return mGameName + "," + mTeamName + "," + flagName.getText().toString() + "," + this.tagSerial;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
