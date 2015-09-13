@@ -13,15 +13,11 @@ public class Player{
     public Player(String name){
         this.name = name;
         this.isCaptain = false;
+        this.teamName = "";
     }
 
     public String getName() {
         return name;
-    }
-
-    public Player(String name, boolean isCaptain){
-        this.name = name;
-        this.isCaptain = isCaptain;
     }
 
     public Player(String name, boolean isCaptain, String teamName){

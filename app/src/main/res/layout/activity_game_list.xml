@@ -6,27 +6,11 @@
 
     <include layout="@layout/toolbar"/>
 
-    <FrameLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/game_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/game_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="4dp"/>
-
-        <com.getbase.floatingactionbutton.AddFloatingActionButton
-            xmlns:fab="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_gravity="bottom|end"
-            fab:fab_colorNormal="@color/colorAccent"
-            fab:fab_colorPressed="@color/colorAccent"
-            fab:fab_plusIconColor="@android:color/white"/>
-    </FrameLayout>
+        android:layout_weight="1"
+        android:layout_margin="4dp"/>
 
 </LinearLayout>
