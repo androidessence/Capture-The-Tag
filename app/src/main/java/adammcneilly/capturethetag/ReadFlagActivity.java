@@ -42,6 +42,7 @@ public class ReadFlagActivity extends AppCompatActivity {
     private NfcAdapter mNFCAdapter;
     private static final String TAG = ReadFlagActivity.class.getSimpleName();
     private List<Flag> mFlags = new ArrayList<>();
+    private Flag myCarriedFlag;
 
 
     @Override
@@ -95,8 +96,8 @@ public class ReadFlagActivity extends AppCompatActivity {
                 // Only update our flag
                 String serial = dataSnapshot.getKey();
                 // my day if off but it's fair for those flying:
-                for(Flag f : mFlags){
-                    if(f.getSerialNumber().equals(serial)){
+                for (Flag f : mFlags) {
+                    if (f.getSerialNumber().equals(serial)) {
                         f.setName(dataSnapshot.child("flagName").getValue().toString());
                         f.setStatus(Global.FlagStatus.valueOf(dataSnapshot.child("status").getValue().toString()));
                     }
@@ -268,7 +269,9 @@ public class ReadFlagActivity extends AppCompatActivity {
                                 // Update status of the flag
                                 new FlagUtility().SetFlagCapturedStatus(gameName, teamName, this.TagSerial, Global.FlagStatus.In_Progress);
                                 // Give the currentUser the flag
-                                new PlayerUtility().setCapturedFlag(gameName, teamName, Global.currentPlayer.getName(), result);
+                                new PlayerUtility().setCapturedFlag(gameName, Global.currentPlayer.getTeamName(), Global.currentPlayer.getName(), result);
+                                flag.setTeamName(teamName);
+                                myCarriedFlag = flag;
                             }
                         }
                     }
@@ -277,16 +280,12 @@ public class ReadFlagActivity extends AppCompatActivity {
                 else
                 {
                     // If I have a flag
-                    if (!(new PlayerUtility().GetPlayersCapturedFlagInfo(gameName, teamName, Global.currentPlayer.getName()))
-                        .equals(""))
-                    {
-                        String[] capturedFlagInfo = new PlayerUtility().GetPlayersCapturedFlagInfo(gameName, teamName, Global.currentPlayer.getName()).split(",");
+                    if(myCarriedFlag != null) {
                         // Set that flag as captured
-                        new FlagUtility().SetFlagCapturedStatus(gameName, capturedFlagInfo[1], capturedFlagInfo[3], Global.FlagStatus.Captured);
-                        // Remove flag from currentUser
-                        new PlayerUtility().RemoveCapturedFlagFromUser(gameName, teamName, Global.currentPlayer.getName());
-                        // Increment team score
-                        //new GameUtility().IncrementScore(gameName, teamName);
+                        new FlagUtility().SetFlagCapturedStatus(gameName, myCarriedFlag.getTeamName(), myCarriedFlag.getSerialNumber(), Global.FlagStatus.Captured);
+                        // Remove from user
+                        new PlayerUtility().RemoveCapturedFlagFromUser(gameName, Global.currentPlayer.getTeamName(), Global.currentPlayer.getName());
+                        myCarriedFlag = null;
                     }
 
                 }

@@ -94,11 +94,11 @@ public class PlayerUtility {
 
     public void RemoveCapturedFlagFromUser(String gameName, String teamName, String playerName)
     {
-        new Firebase(Global.FirebaseURl).child(gameName).child(teamName).child(playerName).child(Global.FLAG).removeValue();
+        new Firebase(Global.FirebaseURl).child(gameName).child(teamName).child(Global.PLAYERS).child(playerName).child(Global.FLAG).removeValue();
     }
 
     public void setCapturedFlag(String gameName, String teamName, String playerName, String flagData)
     {
-        new Firebase(Global.FirebaseURl).child(gameName).child(teamName).child(playerName).child(Global.FLAG).setValue(flagData);
+        new Firebase(Global.FirebaseURl).child(gameName).child(teamName).child(Global.PLAYERS).child(playerName).child(Global.FLAG).setValue(flagData);
     }
 }
