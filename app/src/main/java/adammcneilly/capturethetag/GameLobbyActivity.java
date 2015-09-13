@@ -116,7 +116,7 @@ public class GameLobbyActivity extends AppCompatActivity {
                 // Add player list item for each player returned
                 String name = dataSnapshot.getKey();
                 String isCaptain = dataSnapshot.child(Global.IS_CAPTAIN).getValue().toString();
-                mAdapter.insertPlayer(new Team(teamName), new Player(name, Boolean.parseBoolean(isCaptain)));
+                mAdapter.insertPlayer(new Team(teamName), new Player(name, Boolean.parseBoolean(isCaptain), teamName));
                 invalidateOptionsMenu();
             }
 

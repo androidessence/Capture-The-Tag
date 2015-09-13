@@ -136,14 +136,16 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
         viewHolder.setTeamPosition(groupPosition);
         viewHolder.teamNameTextView.setText(viewHolder.getTeamName() + " (" + getChildrenCount(groupPosition) + " players)");
 
-        // If current player is not null and does not belong to the current team, remove button
-        if(Global.currentPlayer != null && !Global.currentPlayer.getTeamName().equals(team.getName())){
+        // If current player has a team name,and it's not equal to the current row, hide button.
+        if(!Global.currentPlayer.getTeamName().isEmpty() && !Global.currentPlayer.getTeamName().equals(team.getName())){
             viewHolder.joinTeam.setVisibility(View.INVISIBLE);
             viewHolder.joinTeam.setClickable(false);
         } else{
             viewHolder.joinTeam.setVisibility(View.VISIBLE);
             viewHolder.joinTeam.setClickable(true);
-            viewHolder.joinTeam.setText((Global.currentPlayer != null && Global.currentPlayer.getTeamName().equals(team.getName())) ? mContext.getResources().getString(R.string.leave) : mContext.getResources().getString(R.string.join));
+            // If player's team name is not empty, and it's equal to this team, show leave.
+            // Otherwise, show join.
+            viewHolder.joinTeam.setText((!Global.currentPlayer.getTeamName().isEmpty() && Global.currentPlayer.getTeamName().equals(team.getName())) ? mContext.getResources().getString(R.string.leave) : mContext.getResources().getString(R.string.join));
         }
 
         return convertView;

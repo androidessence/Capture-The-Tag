@@ -33,14 +33,5 @@ public class GameListActivity extends AppCompatActivity {
 
         GameAdapter gameAdapter = new GameAdapter(this);
         gameRecyclerView.setAdapter(gameAdapter);
-
-        AddFloatingActionButton fab = (AddFloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent startGameIntent = new Intent(GameListActivity.this, StartGameActivity.class);
-                startActivity(startGameIntent);
-            }
-        });
     }
 }
