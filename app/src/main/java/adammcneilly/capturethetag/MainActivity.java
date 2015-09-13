@@ -41,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_read_tag:
                 startReadFlagActivity();
                 return true;
+            case R.id.action_game_list:
+                startGameListActivity();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -70,5 +73,10 @@ public class MainActivity extends AppCompatActivity {
     private void startReadFlagActivity(){
         Intent readFlagIntent = new Intent(MainActivity.this, ReadFlagActivity.class);
         startActivity(readFlagIntent);
+    }
+
+    private void startGameListActivity(){
+        Intent gameListIntent = new Intent(MainActivity.this, GameListActivity.class);
+        startActivity(gameListIntent);
     }
 }

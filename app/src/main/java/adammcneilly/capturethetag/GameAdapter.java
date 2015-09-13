@@ -7,10 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
 import java.sql.Ref;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,13 +24,44 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder>{
     private Context mContext;
     private List<Game> mGames;
 
-    public GameAdapter(Context context, List<Game> games){
+    public GameAdapter(Context context){
         this.mContext = context;
-        this.mGames = games;
+        this.mGames = new ArrayList<>();
+        monitorGames();
     }
 
     private void monitorGames(){
         Firebase ref = new Firebase(Global.FirebaseURl);
+        ref.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String gameName = dataSnapshot.getKey();
+                mGames.add(new Game(gameName));
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                String gameName = dataSnapshot.getKey();
+                mGames.remove(new Game(gameName));
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     @Override

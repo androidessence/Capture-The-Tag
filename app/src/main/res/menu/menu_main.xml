@@ -11,4 +11,7 @@
     <item android:id="@+id/action_read_tag"
         android:title="@string/title_activity_read_flag"
         app:showAsAction="never"/>
+    <item android:id="@+id/action_game_list"
+        android:title="@string/title_activity_game_list"
+        app:showAsAction="never"/>
 </menu>
