@@ -48,7 +48,12 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder>{
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 String gameName = dataSnapshot.getKey();
-                mGames.remove(new Game(gameName));
+                for(Game game : mGames){
+                    if(game.getName().equals(gameName)){
+                        mGames.remove(game);
+                        break;
+                    }
+                }
                 notifyDataSetChanged();
             }
 
