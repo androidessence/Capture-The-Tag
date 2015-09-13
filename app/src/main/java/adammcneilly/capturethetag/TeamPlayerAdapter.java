@@ -51,6 +51,11 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
         notifyDataSetChanged();
     }
 
+    public void insertTeam(Team team){
+        mTeams.add(team);
+        mTeamPlayers.put(team, new ArrayList<Player>());
+    }
+
     public void removePlayer(Team playerTeam, Player player){
         for(Team team : mTeamPlayers.keySet()){
             if(team.getName().equals(playerTeam.getName())){

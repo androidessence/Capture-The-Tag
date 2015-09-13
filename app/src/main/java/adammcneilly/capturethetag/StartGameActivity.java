@@ -80,7 +80,6 @@ public class StartGameActivity extends AppCompatActivity {
             teams.add(new Team(teamName));
             teamNames[i] = teamName;
         }
-        gameLobbyIntent.putExtra(GameLobbyActivity.ARG_TEAMS, teamNames);
         new GameUtility().InitGameAndTeams(mGameName.getText().toString(), teams);
         startActivity(gameLobbyIntent);
     }

@@ -1,10 +1,12 @@
 package adammcneilly.capturethetag;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.firebase.client.ChildEventListener;
@@ -13,8 +15,10 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
+import java.lang.reflect.Array;
 import java.sql.Ref;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,6 +27,7 @@ import java.util.List;
 public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder>{
     private Context mContext;
     private List<Game> mGames;
+    private Firebase mFirebase;
 
     public GameAdapter(Context context){
         this.mContext = context;
@@ -31,8 +36,8 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder>{
     }
 
     private void monitorGames(){
-        Firebase ref = new Firebase(Global.FirebaseURl);
-        ref.addChildEventListener(new ChildEventListener() {
+        mFirebase = new Firebase(Global.FirebaseURl);
+        mFirebase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 String gameName = dataSnapshot.getKey();
@@ -48,8 +53,8 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder>{
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 String gameName = dataSnapshot.getKey();
-                for(Game game : mGames){
-                    if(game.getName().equals(gameName)){
+                for (Game game : mGames) {
+                    if (game.getName().equals(gameName)) {
                         mGames.remove(game);
                         break;
                     }
@@ -86,12 +91,54 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder>{
         return mGames.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public final TextView gameNameTextView;
+        public final Button joinGameButton;
 
         public ViewHolder(View view){
             super(view);
             gameNameTextView = (TextView) view.findViewById(R.id.game_name);
+            joinGameButton = (Button) view.findViewById(R.id.join_game);
+            joinGameButton.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Game game = mGames.get(getAdapterPosition());
+            Intent gameLobbyIntent = new Intent(mContext, GameLobbyActivity.class);
+            gameLobbyIntent.putExtra(GameLobbyActivity.ARG_GAME, game.getName());
+
+            // Get teamNames
+            final List<String> teamNames = new ArrayList<>();
+            Query fbQuery = mFirebase.child(game.getName()).orderByKey();
+            fbQuery.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    teamNames.add(dataSnapshot.getKey());
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+
+            mContext.startActivity(gameLobbyIntent);
         }
     }
 }
