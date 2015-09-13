@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import adammcneilly.capturethetag.Utilities.PlayerUtility;
+
 /**
  * Created by adammcneilly on 9/12/15.
  */
@@ -42,6 +44,20 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
                 if (mTeamPlayers.get(team).size() == 1)
                 {
                     // TODO: Add crown to player item (on left hand side)
+                }
+            }
+        }
+
+        notifyDataSetChanged();
+    }
+
+    public void removePlayer(Team playerTeam, Player player){
+        for(Team team : mTeamPlayers.keySet()){
+            if(team.getName().equals(playerTeam.getName())){
+                for(Player pl : mTeamPlayers.get(team)) {
+                    if (pl.getName().equals(player.getName())) {
+                        mTeamPlayers.get(team).remove(pl);
+                    }
                 }
             }
         }
@@ -83,8 +99,6 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
         return null;
     }
 
-
-
     @Override
     public long getGroupId(int groupPosition) {
         return groupPosition;
@@ -116,6 +130,16 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
         viewHolder.setTeamName(team.getName());
         viewHolder.setTeamPosition(groupPosition);
         viewHolder.teamNameTextView.setText(viewHolder.getTeamName() + " (" + getChildrenCount(groupPosition) + " players)");
+
+        // If current player is not null and does not belong to the current team, remove button
+        if(Global.currentPlayer != null && !Global.currentPlayer.getTeamName().equals(team.getName())){
+            viewHolder.joinTeam.setVisibility(View.INVISIBLE);
+            viewHolder.joinTeam.setClickable(false);
+        } else{
+            viewHolder.joinTeam.setVisibility(View.VISIBLE);
+            viewHolder.joinTeam.setClickable(true);
+            viewHolder.joinTeam.setText((Global.currentPlayer != null && Global.currentPlayer.getTeamName().equals(team.getName())) ? mContext.getResources().getString(R.string.leave) : mContext.getResources().getString(R.string.join));
+        }
 
         return convertView;
     }
@@ -152,7 +176,7 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
         public final TextView teamNameTextView;
         private String teamName = "";
         private int teamPosition;
-        private final Button joinTeam;
+        public final Button joinTeam;
 
         public TeamViewHolder(View view){
             teamNameTextView = (TextView) view.findViewById(R.id.team_name);
@@ -174,9 +198,14 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
 
         @Override
         public void onClick(View v) {
-            boolean isCaptain = getChildrenCount(teamPosition) == 0;
-            DialogFragment enterNameDialog = EnterNameDialog.NewInstance(getTeamName(), mGameName, isCaptain);
-            enterNameDialog.show(((AppCompatActivity)mContext).getSupportFragmentManager(), "enterName");
+            if(joinTeam.getText().toString().equals(mContext.getResources().getString(R.string.join))){
+                boolean isCaptain = getChildrenCount(teamPosition) == 0;
+                DialogFragment enterNameDialog = EnterNameDialog.NewInstance(getTeamName(), mGameName, isCaptain);
+                enterNameDialog.show(((AppCompatActivity)mContext).getSupportFragmentManager(), "enterName");
+            } else{
+                new PlayerUtility().RemovePlayer(mGameName, teamName, Global.currentPlayer.getName());
+                Global.currentPlayer = null;
+            }
         }
     }
 

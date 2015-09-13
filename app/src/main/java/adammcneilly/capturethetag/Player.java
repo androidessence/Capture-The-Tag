@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class Player{
     private String name;
     private boolean isCaptain;
+    private String teamName;
 
     public Player(String name){
         this.name = name;
@@ -23,6 +24,12 @@ public class Player{
         this.isCaptain = isCaptain;
     }
 
+    public Player(String name, boolean isCaptain, String teamName){
+        this.name = name;
+        this.isCaptain = isCaptain;
+        this.teamName = teamName;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -33,5 +40,13 @@ public class Player{
 
     public void setIsCaptain(boolean isCaptain) {
         this.isCaptain = isCaptain;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
     }
 }

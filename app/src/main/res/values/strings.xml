@@ -21,4 +21,5 @@
     <string name="title_activity_read_flag">Read Flag</string>
     <string name="title_activity_game_list">Game List</string>
     <string name="set_flag">Set Flags</string>
+    <string name="leave">Leave</string>
 </resources>

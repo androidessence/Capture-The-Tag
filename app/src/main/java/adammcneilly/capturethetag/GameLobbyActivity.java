@@ -77,7 +77,6 @@ public class GameLobbyActivity extends AppCompatActivity {
                 // Pull data from datasnapshot
                 // Add player list item for each player returned
                 String name = dataSnapshot.getKey();
-
                 String isCaptain = dataSnapshot.child(Global.IS_CAPTAIN).getValue().toString();
                 mAdapter.insertPlayer(new Team(teamName), new Player(name, Boolean.parseBoolean(isCaptain)));
                 invalidateOptionsMenu();
@@ -90,7 +89,9 @@ public class GameLobbyActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                String name = dataSnapshot.getKey();
+                mAdapter.removePlayer(new Team(teamName), new Player(name));
+                invalidateOptionsMenu();
             }
 
             @Override

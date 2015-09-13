@@ -70,7 +70,7 @@ public class EnterNameDialog extends DialogFragment {
             return;
         }
 
-        Global.currentPlayer = new Player(mPlayerName.getText().toString(), mCaptain);
+        Global.currentPlayer = new Player(mPlayerName.getText().toString(), mCaptain, mTeamName);
         if(mCaptain){
             new PlayerUtility().AddPlayerAsCaptain(mGameName, mTeamName, mPlayerName.getText().toString());
         } else{
