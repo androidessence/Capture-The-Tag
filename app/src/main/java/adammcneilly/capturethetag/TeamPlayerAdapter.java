@@ -207,14 +207,18 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
         public void onClick(View v) {
             if(joinTeam.getText().toString().equals(mContext.getResources().getString(R.string.join))){
                 boolean isCaptain = getChildrenCount(teamPosition) == 0;
-                DialogFragment enterNameDialog = EnterNameDialog.NewInstance(getTeamName(), mGameName, isCaptain);
-                enterNameDialog.show(((AppCompatActivity)mContext).getSupportFragmentManager(), "enterName");
+                Global.currentPlayer.setTeamName(teamName);
+                if(isCaptain){
+                    new PlayerUtility().AddPlayerAsCaptain(mGameName, Global.currentPlayer.getTeamName(), Global.currentPlayer.getName());
+                } else{
+                    new PlayerUtility().AddPlayer(mGameName, Global.currentPlayer.getTeamName(), Global.currentPlayer.getName());
+                }
             } else{
                 if (getChildrenCount(teamPosition) == 1) // If its the last player in the team
                     new PlayerUtility().RemoveLastPlayer(mGameName, teamName, Global.currentPlayer.getName());
                 else
                     new PlayerUtility().RemovePlayer(mGameName, teamName, Global.currentPlayer.getName());
-                Global.currentPlayer = null;
+                Global.currentPlayer.setTeamName("");
             }
         }
     }

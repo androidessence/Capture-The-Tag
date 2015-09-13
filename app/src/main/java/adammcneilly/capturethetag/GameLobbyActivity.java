@@ -67,7 +67,7 @@ public class GameLobbyActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if(Global.currentPlayer != null && Global.currentPlayer.isCaptain()){
+        if(!Global.currentPlayer.getTeamName().equals("") && Global.currentPlayer.isCaptain()){
             // Inflate the menu; this adds items to the action bar if it is present.
             getMenuInflater().inflate(R.menu.menu_game_lobby, menu);
             return true;
