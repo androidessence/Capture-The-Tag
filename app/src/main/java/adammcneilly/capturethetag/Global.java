@@ -14,6 +14,7 @@ public class Global {
     public static String STATUS = "status";
     public static String SERIAL = "serial";
     public static String FLAG = "flag";
+    public static String FLAG_NAME = "flagName";
 
     public static Player currentPlayer;
 

@@ -96,10 +96,10 @@ public class FlagWriteActivity extends AppCompatActivity {
             if (writeTag(message, detectedTag)) {
 
                 new FlagUtility().AddFlag(
-                        mGameName,
-                        mTeamName,
-                        flagName.getText().toString(),
-                        Global.ByteArrToSerial(detectedTag.getId()));
+                        gameName,
+                        teamName,
+                        Global.ByteArrToSerial(detectedTag.getId()),
+                        flagName.getText().toString());
 
                 Toast.makeText(this, "Success: Wrote placeid to nfc tag", Toast.LENGTH_LONG)
                         .show();
