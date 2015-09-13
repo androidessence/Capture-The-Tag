@@ -96,8 +96,8 @@ public class FlagWriteActivity extends AppCompatActivity {
             if (writeTag(message, detectedTag)) {
 
                 new FlagUtility().AddFlag(
-                        gameName,
-                        teamName,
+                        mGameName,
+                        mTeamName,
                         Global.ByteArrToSerial(detectedTag.getId()),
                         flagName.getText().toString());
 

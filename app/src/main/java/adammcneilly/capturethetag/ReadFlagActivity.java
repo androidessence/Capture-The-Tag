@@ -38,19 +38,13 @@ public class ReadFlagActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read_flag);
-        mTextView = (TextView) findViewById(R.id.test);
+        mTextView = (TextView) findViewById(R.id.response);
 
         mNFCAdapter = NfcAdapter.getDefaultAdapter(this);
 
         if(mNFCAdapter == null){
             //TODO: Handle null adapter.
             finish();
-        }
-
-        if(!mNFCAdapter.isEnabled()){
-            mTextView.setText("NFC is disabled!");
-        } else{
-            mTextView.setText("NFC Enabled");
         }
 
         handleIntent(getIntent());
@@ -194,8 +188,15 @@ public class ReadFlagActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             Log.v(TAG, "in onPostExecute: " + result);
+            //gameName, teamName, flagName
+
+            String[] data = result.split(",");
+            String gameName = data[0];
+            String teamName = data[1];
+            String flagName = data[2];
+
             if (result != null) {
-                mTextView.setText("Read content: " + result);
+                mTextView.setText("Good work soldier, you've scanned a flag. I've added some details about the flag below, bring it to home base and we'll take care of the enemy. \n\nFlag Name:" + flagName + "\n\nTeam Creator:" + teamName);
             }
         }
     }
