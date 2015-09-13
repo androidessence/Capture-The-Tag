@@ -25,5 +25,4 @@ public class GameUtility {
         for (Team t : teams)
             gameRef.child(t.getName()).setValue("temp");
     }
-
 }

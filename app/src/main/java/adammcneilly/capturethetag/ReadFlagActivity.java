@@ -1,6 +1,7 @@
 package adammcneilly.capturethetag;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -12,6 +13,7 @@ import android.nfc.tech.Ndef;
 import android.nfc.tech.NfcA;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -25,6 +27,7 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -152,6 +155,8 @@ public class ReadFlagActivity extends AppCompatActivity {
         if(flagCount == 0){
             mFlagMessage.setText("");
             mScan.setText("Congratulations! You won!");
+        } else{
+            mScan.setText(getResources().getString(R.string.scan_ready));
         }
     }
 
