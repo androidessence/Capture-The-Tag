@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -22,6 +25,7 @@ public class GameLobbyActivity extends AppCompatActivity {
     private String mGameName;
     private List<Team> mTeams = new ArrayList<>();
     private TeamPlayerAdapter mAdapter;
+    private Button mStart;
 
     public static final String ARG_GAME = "game";
 
@@ -45,6 +49,19 @@ public class GameLobbyActivity extends AppCompatActivity {
         mExpandableListView = (ExpandableListView) findViewById(R.id.team_player_list_view);
         mAdapter = new TeamPlayerAdapter(this, mTeams, mGameName);
         mExpandableListView.setAdapter(mAdapter);
+        mStart = (Button) findViewById(R.id.start);
+        mStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // First make sure all teams have at least one player
+                for(int i = 0; i < mAdapter.getGroupCount(); i++){
+                    if(mAdapter.getChildrenCount(i) == 0){
+                        Toast.makeText(getApplicationContext(), "Each team must have one player.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+            }
+        });
     }
 
     @Override
