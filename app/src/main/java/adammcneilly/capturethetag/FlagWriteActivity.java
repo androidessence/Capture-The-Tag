@@ -29,8 +29,11 @@ public class FlagWriteActivity extends AppCompatActivity {
     private PendingIntent mNfcPendingIntent;
     EditText flagName;
 
-    String gameName = "MHacks";
-    String teamName = "Tradam";
+    private String mGameName;
+    private String mTeamName;
+
+    public static final String ARG_GAME = "game";
+    public static final String ARG_TEAM = "team";
 
     String mimeType = "application/adammcneilly.capturethetag";
 
@@ -66,6 +69,8 @@ public class FlagWriteActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s){}
         });
 
+        mGameName = getIntent().getStringExtra(ARG_GAME);
+        mTeamName = getIntent().getStringExtra(ARG_TEAM);
     }
 
     private void enableTagWriteMode() {
@@ -91,8 +96,8 @@ public class FlagWriteActivity extends AppCompatActivity {
             if (writeTag(message, detectedTag)) {
 
                 new FlagUtility().AddFlag(
-                        gameName,
-                        teamName,
+                        mGameName,
+                        mTeamName,
                         flagName.getText().toString(),
                         Global.ByteArrToSerial(detectedTag.getId()));
 
@@ -145,6 +150,6 @@ public class FlagWriteActivity extends AppCompatActivity {
     }
 
     public String getFlagString(){
-        return gameName + "," + teamName + "," + flagName.getText().toString();
+        return mGameName + "," + mTeamName + "," + flagName.getText().toString();
     }
 }

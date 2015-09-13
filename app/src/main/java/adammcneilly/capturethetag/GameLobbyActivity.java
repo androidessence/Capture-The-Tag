@@ -1,9 +1,11 @@
 package adammcneilly.capturethetag;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ExpandableListView;
 
 import com.firebase.client.ChildEventListener;
@@ -123,5 +125,19 @@ public class GameLobbyActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.action_set_flag:
+                Intent flagWriteIntent = new Intent(GameLobbyActivity.this, FlagWriteActivity.class);
+                flagWriteIntent.putExtra(FlagWriteActivity.ARG_GAME, mGameName);
+                flagWriteIntent.putExtra(FlagWriteActivity.ARG_TEAM, Global.currentPlayer.getTeamName());
+                startActivity(flagWriteIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
