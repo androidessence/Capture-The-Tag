@@ -30,6 +30,11 @@ public class PlayerUtility {
         new Firebase(Global.FirebaseURl).child(gameName).child(teamName).child(Global.PLAYERS).child(playerName).removeValue();
     }
 
+    public void RemoveLastPlayer(String gameName, String teamName, String playerName)
+    {
+        new Firebase(Global.FirebaseURl).child(gameName).child(teamName).setValue("temp");
+    }
+
     public void SetIsPlayerCaptain(String gameName, String teamName, String playerName, boolean IsCaptain)
     {
         new Firebase(Global.FirebaseURl).child(gameName).child(teamName).child(Global.PLAYERS).child(playerName)

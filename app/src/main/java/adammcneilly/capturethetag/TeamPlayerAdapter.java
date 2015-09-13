@@ -208,7 +208,10 @@ public class TeamPlayerAdapter extends BaseExpandableListAdapter {
                 DialogFragment enterNameDialog = EnterNameDialog.NewInstance(getTeamName(), mGameName, isCaptain);
                 enterNameDialog.show(((AppCompatActivity)mContext).getSupportFragmentManager(), "enterName");
             } else{
-                new PlayerUtility().RemovePlayer(mGameName, teamName, Global.currentPlayer.getName());
+                if (getChildrenCount(teamPosition) == 1) // If its the last player in the team
+                    new PlayerUtility().RemoveLastPlayer(mGameName, teamName, Global.currentPlayer.getName());
+                else
+                    new PlayerUtility().RemovePlayer(mGameName, teamName, Global.currentPlayer.getName());
                 Global.currentPlayer = null;
             }
         }
