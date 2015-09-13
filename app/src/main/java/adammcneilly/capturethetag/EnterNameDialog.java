@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -69,6 +70,7 @@ public class EnterNameDialog extends DialogFragment {
             return;
         }
 
+        Global.currentPlayer = new Player(mPlayerName.getText().toString(), mCaptain);
         if(mCaptain){
             new PlayerUtility().AddPlayerAsCaptain(mGameName, mTeamName, mPlayerName.getText().toString());
         } else{

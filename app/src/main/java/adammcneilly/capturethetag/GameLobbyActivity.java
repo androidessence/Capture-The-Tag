@@ -58,6 +58,17 @@ public class GameLobbyActivity extends AppCompatActivity {
         mExpandableListView.setAdapter(mAdapter);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        if(Global.currentPlayer != null && Global.currentPlayer.isCaptain()){
+            // Inflate the menu; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.menu_game_lobby, menu);
+            return true;
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
     private void InitTeamListener(final String teamName) {
         Firebase refWithPlayers = ref.child(mGameName).child(teamName).child("players");
         refWithPlayers.addChildEventListener(new ChildEventListener() {
@@ -68,6 +79,7 @@ public class GameLobbyActivity extends AppCompatActivity {
                 String name = dataSnapshot.getKey();
                 String isCaptain = dataSnapshot.child(Global.IS_CAPTAIN).getValue().toString();
                 mAdapter.insertPlayer(new Team(teamName), new Player(name, Boolean.parseBoolean(isCaptain)));
+                invalidateOptionsMenu();
             }
 
             @Override

@@ -38,6 +38,10 @@
             android:name=".ReadFlagActivity"
             android:label="@string/title_activity_read_flag" >
         </activity>
+        <activity
+            android:name=".GameListActivity"
+            android:label="@string/title_activity_game_list" >
+        </activity>
     </application>
 
 </manifest>

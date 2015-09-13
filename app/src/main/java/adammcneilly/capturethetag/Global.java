@@ -8,6 +8,10 @@ public class Global {
     public static String FirebaseURl = "https://capture-the-tag.firebaseio.com/";
     public static final String IS_CAPTAIN = "IsCaptain";
 
+    public static Player currentPlayer;
+
+
+
     public enum FlagStatus
     {
         Not_Captured,
